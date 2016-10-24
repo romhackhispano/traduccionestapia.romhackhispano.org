@@ -33,11 +33,13 @@ function fix_file($file) {
 	//$fixedData = mb_convert_encoding($data, 'utf-8', 'ISO-8859-1');
 	$fixedData = html_entity_decode($fixedData);
 	$fixedData = mb_convert_encoding($fixedData, 'ISO-8859-1', 'utf-8');
+	$fixedData = mb_convert_encoding($fixedData, 'utf-8', 'utf-8'); // sanitize
 	file_put_contents($file, $fixedData);
-	echo $fixedData;
+	//echo $fixedData;
 }
 
 foreach (rglob('*.html') as $file) {
+	if (preg_match('@_layouts|_includes@', $file)) continue;
 	echo "$file\n";
 	fix_file($file);
 }
